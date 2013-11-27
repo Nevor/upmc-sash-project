@@ -1,0 +1,50 @@
+Roven Gabriel - nevor@nevor.et 
+
+Retained syntax
+===============
+
+The syntax used by my evaluator is "-echo $[1 + 2]"
+
+C AST representation
+====================
+
+enum kind_en { Nothing, Variable, Plus, Minus, Mult, Div, Integer };
+
+union value {
+    int num; // for Integer
+    char* var;
+};
+
+struct ast_st {
+    enum kind_en kind;
+
+    struct ast_st* left;
+    struct ast_st* right;
+
+    union value value;
+};
+
+The choosen AST representation is a slightly modified version of the one
+viewed in the first lecture. A node of the AST is a structure containing
+a kind, a left and right node and a value union.
+
+The content of left, right and value will vary according to kind.
+
+Possible Evaluation errors
+==========================
+
+The following errors can occure :
+- syntax error : 1++
+- unknown character : a+b
+- undefined variable
+- operation error : a/0
+
+As we extend a script language, we must retain the permissiveness of such
+a language. We are going to silently ignore theses errors as much as we can.
+
+
+Question 6 Implementation
+=========================
+
+I have implemented the extension b), the AST simplification.
+The code is in eval-upmc in the function astSimplify.
